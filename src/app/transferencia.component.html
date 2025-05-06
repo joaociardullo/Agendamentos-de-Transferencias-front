@@ -1,0 +1,107 @@
+<div class="container-dark">
+  <h1>Transferências Financeiras</h1>
+
+  <!-- Formulário -->
+  <form (ngSubmit)="salvar()" class="formulario-transferencia">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="contaOrigem">Conta Origem</label>
+        <span class="hint">Número da conta de origem (ex: 123456)</span>
+        <input type="text" id="contaOrigem" [(ngModel)]="novaTransferencia.contaOrigem" name="contaOrigem" required />
+      </div>
+
+      <div class="form-group">
+        <label for="contaDestino">Conta Destino</label>
+        <span class="hint">Número da conta de destino (ex: 654321)</span>
+        <input type="text" id="contaDestino" [(ngModel)]="novaTransferencia.contaDestino" name="contaDestino" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="valor">Valor</label>
+        <span class="hint">Valor em R$ (ex: 1500,00)</span>
+        <input type="number" id="valor" [(ngModel)]="novaTransferencia.valor" name="valor" step="0.01" min="0" required />
+      </div>
+
+      <div class="form-group">
+        <label for="taxa">Taxa</label>
+        <span class="hint">Taxa aplicada em R$</span>
+        <input type="number" id="taxa" [(ngModel)]="novaTransferencia.taxa" name="taxa" step="0.01" min="0" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="dataAgendamento">Data Agendamento</label>
+        <span class="hint">Data prevista para agendamento</span>
+        <input type="date" id="dataAgendamento" [(ngModel)]="novaTransferencia.dataAgendamento" name="dataAgendamento" required />
+      </div>
+
+      <div class="form-group">
+        <label for="dataTransferencia">Data Transferência</label>
+        <span class="hint">Data efetiva da transferência</span>
+        <input type="date" id="dataTransferencia" [(ngModel)]="novaTransferencia.dataTransferencia" name="dataTransferencia" required />
+      </div>
+    </div>
+
+    <!-- Botões de ação do formulário -->
+    <div class="form-actions">
+      <div class="action-buttons">
+        <button type="submit" class="submit-button">
+          {{ editandoId ? 'Atualizar Transferência' : 'Cadastrar Transferência' }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Botão de busca abaixo do formulário -->
+  <div class="search-group" style="margin-top: 1.5rem;">
+    <input type="text" [(ngModel)]="contaFiltro" placeholder="Pesquisar por Conta..." class="search-input" />
+    <button type="button" (click)="buscarPorConta()" class="search-button">Buscar por Conta</button>
+  </div>
+
+  <!-- Tabela -->
+  <div class="table-container">
+    <div class="titulo-extrato">
+      <h2>Extrato de Transferencias</h2>
+    </div>
+    <table class="transferencias-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Conta Origem</th>
+          <th>Conta Destino</th>
+          <th class="value-cell">Valor (R$)</th>
+          <th class="value-cell">Taxa (R$)</th>
+          <th>Data Agendamento</th>
+          <th>Data Transferência</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of transferencias">
+          <td>{{ t.id }}</td>
+          <td contenteditable="true" (blur)="atualizarCampo(t, 'contaOrigem', $event)">{{ t.contaOrigem }}</td>
+          <td contenteditable="true" (blur)="atualizarCampo(t, 'contaDestino', $event)">{{ t.contaDestino }}</td>
+          <td class="value-cell" contenteditable="true" (blur)="atualizarCampo(t, 'valor', $event)">
+            {{ t.valor | currency:'BRL':'symbol':'1.2-2' }}
+          </td>
+          <td class="value-cell">{{ t.taxa | currency:'BRL':'symbol':'1.2-2' }}</td>
+          <td contenteditable="true" (blur)="atualizarCampo(t, 'dataAgendamento', $event)">
+            {{ t.dataAgendamento | date:'dd/MM/yyyy' }}
+          </td>
+          <td contenteditable="true" (blur)="atualizarCampo(t, 'dataTransferencia', $event)">
+            {{ t.dataTransferencia | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="actions-cell">
+            <span class="action-separator"></span>
+            <button class="delete-btn" (click)="deletar(t.id!)">
+              <i class="icon-delete"></i> Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
