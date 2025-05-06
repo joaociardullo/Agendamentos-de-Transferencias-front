@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TransferenciaService } from './transferencia.service';
 import { Transferencia } from './transferencia.model';
-import { CommonModule, DecimalPipe, DatePipe, CurrencyPipe } from '@angular/common';
+import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-transferencia',
   standalone: true,
-  imports: [CommonModule, FormsModule, DecimalPipe, DatePipe, CurrencyPipe],
+  imports: [CommonModule, FormsModule, DatePipe, CurrencyPipe],
   templateUrl: './transferencia.component.html',
   styleUrls: ['./transferencia.component.scss']
 })
